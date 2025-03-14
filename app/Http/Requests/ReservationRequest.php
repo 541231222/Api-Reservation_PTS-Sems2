@@ -14,8 +14,8 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer',
-            'car_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
+            'car_id' => 'required|integer|exists:cars,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'proof_of_payment' => 'required|string',
@@ -27,9 +27,11 @@ class ReservationRequest extends FormRequest
     public function messages(): array
 {
     return [
+        'user_id.exists' => 'User ID tidak valid.',
         'user_id.required' => 'User ID wajib diisi.',
         'user_id.integer' => 'User ID harus berupa angka.',
 
+        'car_id.exists' => 'Car ID tidak valid.',
         'car_id.required' => 'Car ID wajib diisi.',
         'car_id.integer' => 'Car ID harus berupa angka.',
 
