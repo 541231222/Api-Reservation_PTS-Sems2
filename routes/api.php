@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CategorySwaggerController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReservationController;
@@ -39,3 +40,8 @@ Route::get('/categories', [CategoryController::class, 'getAllData']);
 Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
 
 Route::put('/categories/{id}/update', [CategoryController::class, 'update']);
+
+Route::group( [], function () {
+    Route::get('category', [CategorySwaggerController::class, 'listCategory']);
+});
+
