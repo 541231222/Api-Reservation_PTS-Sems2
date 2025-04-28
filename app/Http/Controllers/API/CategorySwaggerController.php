@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
  *     tags={"Category"},
  *     operationId="listCategory",
  *     summary="List of Categories",
- *     description="Retrieve a list of book categories",
+ *     description="Retrieve a list of car categories",
  *     @OA\Response(
  *         response=200,
  *         description="Successful operation",
@@ -21,8 +21,8 @@ use Illuminate\Http\Request;
  *                 "success": true,
  *                 "message": "Successfully retrieved categories",
  *                 "data": {
- *                     {"id": 1, "name": "Fiction"},
- *                     {"id": 2, "name": "Non-Fiction"}
+ *                     {"id": 1, "name": "Sedan"},
+ *                     {"id": 2, "name": "Truk"}
  *                 }
  *             }
  *         )
@@ -37,8 +37,8 @@ class CategorySwaggerController extends Controller
             'success' => true,
             'message' => 'Successfully retrieved categories',
             'data' => [
-                ['id' => 1, 'name' => 'Fiction'],
-                ['id' => 2, 'name' => 'Non-Fiction']
+                ['id' => 1, 'name' => 'Sedan'],
+                ['id' => 2, 'name' => 'Truk']
             ]
         ]);
     }

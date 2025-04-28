@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\CarSwaggerController;
 use App\Http\Controllers\API\CategorySwaggerController;
+use App\Http\Controllers\API\ReservationSwaggerController;
+use App\Http\Controllers\API\UserSwaggerController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReservationController;
@@ -45,3 +48,14 @@ Route::group( [], function () {
     Route::get('category', [CategorySwaggerController::class, 'listCategory']);
 });
 
+Route::group( [], function () {
+    Route::get('car', [CarSwaggerController::class, 'listCar']);
+});
+
+Route::group( [], function () {
+    Route::get('user', [UserSwaggerController::class, 'listUser']);
+});
+
+Route::group( [], function () {
+    Route::get('reservation', [ReservationSwaggerController::class, 'listReservation']);
+});

@@ -19,13 +19,59 @@
         }
     ],
     "paths": {
+        "/car": {
+            "get": {
+                "tags": [
+                    "Car"
+                ],
+                "summary": "List of Cars",
+                "description": "Retrieve a list of cars",
+                "operationId": "listCar",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Successfully retrieved cars",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "user_id": 5,
+                                            "category_id": 2,
+                                            "name": "Toyota Fortuner",
+                                            "image": "fortuner.jpg",
+                                            "brand_name": "Toyota",
+                                            "price_per_day": 500000,
+                                            "stock": 3
+                                        },
+                                        {
+                                            "id": 2,
+                                            "user_id": 8,
+                                            "category_id": 1,
+                                            "name": "Honda Jazz",
+                                            "image": "jazz.jpg",
+                                            "brand_name": "Honda",
+                                            "price_per_day": 350000,
+                                            "stock": 5
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/category": {
             "get": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "List of Categories",
-                "description": "Retrieve a list of book categories",
+                "description": "Retrieve a list of car categories",
                 "operationId": "listCategory",
                 "responses": {
                     "200": {
@@ -39,11 +85,95 @@
                                     "data": [
                                         {
                                             "id": 1,
-                                            "name": "Fiction"
+                                            "name": "Sedan"
                                         },
                                         {
                                             "id": 2,
-                                            "name": "Non-Fiction"
+                                            "name": "Truk"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reservation": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "List of Reservations",
+                "description": "Retrieve a list of reservations",
+                "operationId": "listReservation",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Successfully retrieved reservations",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "user_id": 5,
+                                            "car_id": 2,
+                                            "start_date": "2025-05-01",
+                                            "end_date": "2025-05-05",
+                                            "proof_of_payment": "payment1.jpg",
+                                            "payment_status": "Paid",
+                                            "status": "Confirmed"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "user_id": 8,
+                                            "car_id": 3,
+                                            "start_date": "2025-06-10",
+                                            "end_date": "2025-06-12",
+                                            "proof_of_payment": "payment2.jpg",
+                                            "payment_status": "Pending",
+                                            "status": "Pending Confirmation"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "List of Users",
+                "description": "Retrieve a list of users including password",
+                "operationId": "listUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {
+                                    "success": true,
+                                    "message": "Successfully retrieved users",
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name": "John Doe",
+                                            "email": "john@example.com",
+                                            "password": "password123"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "Jane Smith",
+                                            "email": "jane@example.com",
+                                            "password": "securepassword456"
                                         }
                                     ]
                                 }
@@ -56,8 +186,20 @@
     },
     "tags": [
         {
+            "name": "Car",
+            "description": "Car"
+        },
+        {
             "name": "Category",
             "description": "Category"
+        },
+        {
+            "name": "Reservation",
+            "description": "Reservation"
+        },
+        {
+            "name": "User",
+            "description": "User"
         }
     ]
 }
