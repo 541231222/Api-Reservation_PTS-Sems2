@@ -44,18 +44,49 @@ Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy'])
 
 Route::put('/categories/{id}/update', [CategoryController::class, 'update']);
 
-Route::group( [], function () {
-    Route::get('category', [CategorySwaggerController::class, 'listCategory']);
+//MODEL CATEGORY YA
+Route::group([], function () {
+    // Route untuk menambahkan kategori baru
+    Route::post('category', [CategorySwaggerController::class, 'store']);
+
+    // Route untuk mengambil semua kategori
+    Route::get('category', [CategorySwaggerController::class, 'getAllData']);
+
+    // Route untuk menghapus kategori berdasarkan ID
+    Route::delete('category/{id}', [CategorySwaggerController::class, 'destroy']);
+
+    // Route untuk memperbarui data kategori berdasarkan ID
+    Route::put('category/{id}', [CategorySwaggerController::class, 'update']);
 });
 
-Route::group( [], function () {
-    Route::get('car', [CarSwaggerController::class, 'listCar']);
+//MODEL CAR
+Route::group([], function () {
+    // Route untuk menambahkan mobil baru
+    Route::post('car', [CarSwaggerController::class, 'store']);
+
+    // Route untuk mengambil semua data mobil
+    Route::get('car', [CarSwaggerController::class, 'getAllData']);
+
+    // Route untuk menghapus mobil berdasarkan ID
+    Route::delete('car/{id}', [CarSwaggerController::class, 'destroy']);
+
+    // Route untuk memperbarui data mobil berdasarkan ID
+    Route::put('car/{id}', [CarSwaggerController::class, 'update']);
 });
 
-Route::group( [], function () {
-    Route::get('user', [UserSwaggerController::class, 'listUser']);
+//MODEL USER
+Route::group([], function () {
+    Route::post('register', [UserSwaggerController::class, 'register']);
+    Route::get('user/{id}', [UserSwaggerController::class, 'getData']);
+    Route::put('user/{id}', [UserSwaggerController::class, 'update']);
+    Route::delete('user/{id}', [UserSwaggerController::class, 'destroy']);
 });
 
-Route::group( [], function () {
-    Route::get('reservation', [ReservationSwaggerController::class, 'listReservation']);
+
+//MODEL RESERVATION
+Route::group([], function () {
+    Route::post('reservation', [ReservationSwaggerController::class, 'reserves']);
+    Route::get('reservation/{id}', [ReservationSwaggerController::class, 'getReservation']);
+    Route::put('reservation/{id}', [ReservationSwaggerController::class, 'update']);
+    Route::delete('reservation/{id}', [ReservationSwaggerController::class, 'destroy']);
 });
