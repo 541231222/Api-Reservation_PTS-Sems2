@@ -36,7 +36,7 @@ return [
                 'docs_yaml' => 'api-docs.yaml',
 
                 /*
-                 * Set this to json or yaml to determine which documentation file to use in UI
+                 * Set this to `json` or `yaml` to determine which documentation file to use in UI
                  */
                 'format_to_use_for_docs' => env('L5_FORMAT_TO_USE_FOR_DOCS', 'json'),
 
@@ -95,8 +95,8 @@ return [
 
             /*
              * Absolute path to directories that should be excluded from scanning
-             * @deprecated Please use scanOptions.exclude
-             * scanOptions.exclude overwrites this
+             * @deprecated Please use `scanOptions.exclude`
+             * `scanOptions.exclude` overwrites this
              */
             'excludes' => [],
         ],
@@ -153,7 +153,7 @@ return [
 
             /*
              * Absolute path to directories that should be excluded from scanning
-             * @note This option overwrites paths.excludes
+             * @note This option overwrites `paths.excludes`
              * @see \OpenApi\scan
              */
             'exclude' => [],
@@ -234,13 +234,13 @@ return [
         ],
 
         /*
-         * Set this to true in development mode so that docs would be regenerated on each request
-         * Set this to false to disable swagger generation on production
+         * Set this to `true` in development mode so that docs would be regenerated on each request
+         * Set this to `false` to disable swagger generation on production
          */
         'generate_always' => env('L5_SWAGGER_GENERATE_ALWAYS', false),
 
         /*
-         * Set this to true to generate a copy of documentation in yaml format
+         * Set this to `true` to generate a copy of documentation in yaml format
          */
         'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
 
@@ -312,7 +312,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000/api'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
         ],
     ],
 ];
