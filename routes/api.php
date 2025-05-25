@@ -1,26 +1,30 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\CarSwaggerController;
 use App\Http\Controllers\API\CategorySwaggerController;
 use App\Http\Controllers\API\ReservationSwaggerController;
 use App\Http\Controllers\API\UserSwaggerController;
-use App\Http\Controllers\API\ReviewSwaggerController;
-use App\Http\Controllers\API\WishlistSwaggerController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\WishlistController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
+
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 
 Route::post('/users', [UserController::class, 'register']);
 
 Route::get( '/users/{id}', [UserController::class, 'getData']);
-
-Route::get( '/users', [UserController::class, 'getAllUsers']);
 
 Route::delete('/users/{id}/delete', [UserController::class, 'destroy']);
 
@@ -30,8 +34,6 @@ Route::post( '/cars', [CarController::class, 'store']);
 
 Route::get('/cars', [CarController::class, 'getAllData']);
 
-Route::get('/cars/category/{categoryId}', [CarController::class, 'getCarsByCategory']);
-
 Route::delete('/cars/{id}/delete', [CarController::class, 'destroy']);
 
 Route::put('/cars/{id}/update', [CarController::class, 'update']);
@@ -39,10 +41,6 @@ Route::put('/cars/{id}/update', [CarController::class, 'update']);
 Route::post( '/reservations', [ReservationController::class, 'reserves']);
 
 Route::get('/reservations/{id}', [ReservationController::class, 'getReservation']);
-
-Route::get('/reservations/filter', [ReservationController::class, 'getByStatus']);
-
-Route::get('/reservations', [ReservationController::class, 'getAllReservations']);
 
 Route::put('/reservations/{id}/update-status', [ReservationController::class, 'update']);
 
@@ -55,12 +53,6 @@ Route::get('/categories', [CategoryController::class, 'getAllData']);
 Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
 
 Route::put('/categories/{id}/update', [CategoryController::class, 'update']);
-
-Route::apiResource('reviews', ReviewController::class);
-
-Route::apiResource('wishlists', WishlistController::class);
-
-
 
 //MODEL CATEGORY YA
 Route::group([], function () {
@@ -109,23 +101,5 @@ Route::group([], function () {
     Route::delete('reservation/{id}', [ReservationSwaggerController::class, 'destroy']);
 });
 
-Route::group([], function () {
-    // Route untuk menambahkan review baru
-    Route::post('reviews', [reviewSwaggerController::class, 'store']);
 
-    // Route untuk mengambil semua review
-    Route::get('reviews', [reviewSwaggerController::class, 'getAllData']);
 
-    // Route untuk menghapus review berdasarkan ID
-    Route::delete('reviews/{id}', [reviewSwaggerController::class, 'destroy']);
-
-    // Route untuk memperbarui data review berdasarkan ID
-    Route::put('reviews/{id}', [reviewSwaggerController::class, 'update']);
-});
-
-Route::group([], function () {
-    Route::post('wishlists', [WishlistSwaggerController::class, 'store']);
-    Route::get('wishlists/{id}', [WishlistSwaggerController::class, 'getAllData']);
-    Route::put('wishlists/{id}', [WishlistSwaggerController::class, 'update']);
-    Route::delete('wishlists/{id}', [WishlistSwaggerController::class, 'destroy']);
-});
