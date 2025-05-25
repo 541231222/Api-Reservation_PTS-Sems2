@@ -20,6 +20,8 @@ Route::post('/users', [UserController::class, 'register']);
 
 Route::get( '/users/{id}', [UserController::class, 'getData']);
 
+Route::get( '/users', [UserController::class, 'getAllUsers']);
+
 Route::delete('/users/{id}/delete', [UserController::class, 'destroy']);
 
 Route::put('/users/{id}/update', [UserController::class, 'update']);
@@ -28,6 +30,8 @@ Route::post( '/cars', [CarController::class, 'store']);
 
 Route::get('/cars', [CarController::class, 'getAllData']);
 
+Route::get('/cars/category/{categoryId}', [CarController::class, 'getCarsByCategory']);
+
 Route::delete('/cars/{id}/delete', [CarController::class, 'destroy']);
 
 Route::put('/cars/{id}/update', [CarController::class, 'update']);
@@ -35,6 +39,10 @@ Route::put('/cars/{id}/update', [CarController::class, 'update']);
 Route::post( '/reservations', [ReservationController::class, 'reserves']);
 
 Route::get('/reservations/{id}', [ReservationController::class, 'getReservation']);
+
+Route::get('/reservations/filter', [ReservationController::class, 'getByStatus']);
+
+Route::get('/reservations', [ReservationController::class, 'getAllReservations']);
 
 Route::put('/reservations/{id}/update-status', [ReservationController::class, 'update']);
 

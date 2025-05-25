@@ -34,11 +34,11 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::with(['user', 'car'])->find($id);
 
-    if (!$reservation) {
-        return response()->json(['message' => 'Reservation not found'], 404);
-    }
+        if (!$reservation) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
 
-    $data = [
+        $data = [
             'user' => [
                 'id' => $reservation->user->id,
                 'name' => $reservation->user->name,
@@ -58,10 +58,48 @@ class ReservationController extends Controller
             ],
         ];
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
 
     }
     //kalo ngambil 1 data berarti ....resource::new kalo banyak collection
+
+    public function getAllReservations()
+    {
+        $reservations = Reservation::with(['user', 'car'])->get();
+
+        if ($reservations->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada data reservasi ditemukan.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data reservasi berhasil diambil.',
+            'data' => ReservationResource::collection($reservations)
+        ], 200);
+    }
+
+    public function getByStatus(ReservationRequest $request)
+    {
+        $status = $request->query('status');
+        $paymentStatus = $request->query('payment_status');
+
+        $reservations = Reservation::with(['user', 'car'])
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($paymentStatus, function ($query) use ($paymentStatus) {
+                $query->where('payment_status', $paymentStatus);
+            })
+            ->get();
+
+        if ($reservations->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada reservasi ditemukan untuk kriteria yang diberikan.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data reservasi berhasil diambil.',
+            'data' => ReservationResource::collection($reservations)
+        ], 200);
+    }
 
     public function update(UpdateReservationStatusRequest $request, $id)
     {

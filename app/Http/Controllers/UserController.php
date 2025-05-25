@@ -56,6 +56,22 @@ class UserController extends Controller
         }
     }
 
+    public function getAllUsers()
+{
+    try {
+        $users = User::all();
+        return response()->json([
+            'message' => 'Daftar semua pengguna berhasil diambil',
+            'users' => UserResource::collection($users)
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Terjadi kesalahan saat mengambil data pengguna',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
     public function update(UpdateUserRequest $request, $id)
     {
         try {

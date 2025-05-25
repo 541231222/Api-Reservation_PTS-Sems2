@@ -38,6 +38,30 @@ class CarController extends Controller
             }
     }
 
+    public function getCarsByCategory($categoryId)
+{
+    try {
+        $cars = Car::where('category_id', $categoryId)->get();
+
+        if ($cars->isEmpty()) {
+            return response()->json([
+                'message' => 'Tidak ada mobil yang ditemukan untuk kategori ini'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Daftar mobil berdasarkan kategori berhasil diambil',
+            'data' => CarResource::collection($cars)
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Terjadi kesalahan saat mengambil data mobil berdasarkan kategori',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+
     public function getAllData()
     {
         $data = Car::all();
