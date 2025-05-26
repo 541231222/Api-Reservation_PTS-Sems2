@@ -30,36 +30,36 @@ class CarController extends Controller
                 "data" => new CarResource($car),
             ], 201);
 
-            }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan saat menambahkan mobil',
                 'error' => $e->getMessage(),
             ], 500);
-            }
+        }
     }
 
     public function getCarsByCategory($categoryId)
-{
-    try {
-        $cars = Car::where('category_id', $categoryId)->get();
+    {
+        try {
+            $cars = Car::where('category_id', $categoryId)->get();
 
-        if ($cars->isEmpty()) {
+            if ($cars->isEmpty()) {
+                return response()->json([
+                    'message' => 'Tidak ada mobil yang ditemukan untuk kategori ini'
+                ], 404);
+            }
+
             return response()->json([
-                'message' => 'Tidak ada mobil yang ditemukan untuk kategori ini'
-            ], 404);
+                'message' => 'Daftar mobil berdasarkan kategori berhasil diambil',
+                'data' => CarResource::collection($cars)
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data mobil berdasarkan kategori',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Daftar mobil berdasarkan kategori berhasil diambil',
-            'data' => CarResource::collection($cars)
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Terjadi kesalahan saat mengambil data mobil berdasarkan kategori',
-            'error' => $e->getMessage()
-        ], 500);
     }
-}
 
 
     public function getAllData()
@@ -93,19 +93,19 @@ class CarController extends Controller
 
             if (!$car) {
                 return response()->json([
-                'message' => 'Mobil tidak ditemukan'
-            ], 404);
-        }
+                    'message' => 'Mobil tidak ditemukan'
+                ], 404);
+            }
 
-        return response()->json([
-            'message' => 'Data mobil berhasil diambil',
-            'data' => new CarResource($car)
-        ], 200);
+            return response()->json([
+                'message' => 'Data mobil berhasil diambil',
+                'data' => new CarResource($car)
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
-            'message' => 'Terjadi kesalahan saat mengambil data mobil',
-            'error' => $e->getMessage()
-        ], 500);
+                'message' => 'Terjadi kesalahan saat mengambil data mobil',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
