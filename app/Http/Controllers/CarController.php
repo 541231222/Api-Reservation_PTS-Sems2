@@ -86,6 +86,30 @@ class CarController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        try {
+            $car = Car::find($id);
+
+            if (!$car) {
+                return response()->json([
+                'message' => 'Mobil tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data mobil berhasil diambil',
+            'data' => new CarResource($car)
+        ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+            'message' => 'Terjadi kesalahan saat mengambil data mobil',
+            'error' => $e->getMessage()
+        ], 500);
+        }
+    }
+
+
     public function update(UpdateCarRequest $request, $id)
     {
         try {

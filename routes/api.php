@@ -42,6 +42,8 @@ Route::get('/cars', [CarController::class, 'getAllData']);
 
 Route::get('/cars/category/{categoryId}', [CarController::class, 'getCarsByCategory']);
 
+Route::get('/cars/{id}', [CarController::class, 'show']);
+
 Route::delete('/cars/{id}/delete', [CarController::class, 'destroy']);
 
 Route::put('/cars/{id}/update', [CarController::class, 'update']);
