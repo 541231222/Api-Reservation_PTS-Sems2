@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\API\CarSwaggerController;
 use App\Http\Controllers\API\ReviewSwaggerController;
 use App\Http\Controllers\API\WishlistSwaggerController;
+use App\Http\Controllers\API\CategorySwaggerController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\CarSwaggerController;
-use App\Http\Controllers\API\CategorySwaggerController;
 use App\Http\Controllers\API\ReservationSwaggerController;
 use App\Http\Controllers\API\UserSwaggerController;
 use App\Http\Controllers\CarController;
@@ -27,99 +27,68 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 
 Route::post('/users', [UserController::class, 'register']);
-
 Route::get( '/users/{id}', [UserController::class, 'getData']);
-
 Route::get( '/users', [UserController::class, 'getAllUsers']);
-
 Route::delete('/users/{id}/delete', [UserController::class, 'destroy']);
-
 Route::put('/users/{id}/update', [UserController::class, 'update']);
 
+
 Route::post( '/cars', [CarController::class, 'store']);
-
 Route::get('/cars', [CarController::class, 'getAllData']);
-
 Route::get('/cars/category/{categoryId}', [CarController::class, 'getCarsByCategory']);
-
 Route::get('/cars/{id}', [CarController::class, 'show']);
-
 Route::delete('/cars/{id}/delete', [CarController::class, 'destroy']);
-
 Route::put('/cars/{id}/update', [CarController::class, 'update']);
 
+
 Route::post( '/reservations', [ReservationController::class, 'reserves']);
-
 Route::get('/reservations/{id}', [ReservationController::class, 'getReservation']);
-
 Route::get('/reservations/filter', [ReservationController::class, 'getByStatus']);
-
 Route::get('/reservations', [ReservationController::class, 'getAllReservations']);
-
 Route::put('/reservations/{id}/update-status', [ReservationController::class, 'update']);
-
 Route::delete('/reservations/{id}/delete', [ReservationController::class, 'destroy']);
 
+
 Route::post( '/categories', [CategoryController::class, 'store']);
-
 Route::get('/categories', [CategoryController::class, 'getAllData']);
-
 Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
-
 Route::put('/categories/{id}/update', [CategoryController::class, 'update']);
 
 Route::apiResource('reviews', ReviewController::class);
 
 Route::apiResource('wishlists', WishlistController::class);
 
-
+//ini swagger
 
 //MODEL CATEGORY YA
-Route::group([], function () {
-    // Route untuk menambahkan kategori baru
-    Route::post('category', [CategorySwaggerController::class, 'store']);
-
-    // Route untuk mengambil semua kategori
-    Route::get('category', [CategorySwaggerController::class, 'getAllData']);
-
-    // Route untuk menghapus kategori berdasarkan ID
-    Route::delete('category/{id}', [CategorySwaggerController::class, 'destroy']);
-
-    // Route untuk memperbarui data kategori berdasarkan ID
-    Route::put('category/{id}', [CategorySwaggerController::class, 'update']);
-});
+Route::post('/category', [CategorySwaggerController::class, 'store']);
+Route::get('/category', [CategorySwaggerController::class, 'getAllData']);
+Route::put('/category/{id}', [CategorySwaggerController::class, 'update']);
+Route::delete('/category/{id}', [CategorySwaggerController::class, 'destroy']);
 
 //MODEL CAR
-Route::group([], function () {
-    // Route untuk menambahkan mobil baru
-    Route::post('car', [CarSwaggerController::class, 'store']);
-
-    // Route untuk mengambil semua data mobil
-    Route::get('car', [CarSwaggerController::class, 'getAllData']);
-
-    // Route untuk menghapus mobil berdasarkan ID
-    Route::delete('car/{id}', [CarSwaggerController::class, 'destroy']);
-
-    // Route untuk memperbarui data mobil berdasarkan ID
-    Route::put('car/{id}', [CarSwaggerController::class, 'update']);
-});
+Route::post('/car', [CarSwaggerController::class, 'store']);                         // Tambah mobil
+Route::get('/car', [CarSwaggerController::class, 'getAllData']);                     // Ambil semua mobil
+Route::get('/car/{id}', [CarSwaggerController::class, 'show']);                      // Ambil detail mobil
+Route::put('/car/{id}', [CarController::class, 'update']);                    // Update data mobil
+Route::delete('/car/{id}', [CarController::class, 'destroy']);               // Hapus mobil
+Route::get('/car/category/{categoryId}', [CarController::class, 'getCarsByCategory']); //get by category dw
 
 //MODEL USER
-Route::group([], function () {
-    Route::post('register', [UserSwaggerController::class, 'register']);
-    Route::get('user/{id}', [UserSwaggerController::class, 'getData']);
-    Route::put('user/{id}', [UserSwaggerController::class, 'update']);
-    Route::delete('user/{id}', [UserSwaggerController::class, 'destroy']);
-});
-
+Route::post('/user/register', [UserController::class, 'register']);
+Route::get('/user/{id}', [UserController::class, 'getData']);
+Route::get('/user', [UserController::class, 'getAllUsers']);
+Route::put('/user/{id}', [UserController::class, 'update']);
+Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
 //MODEL RESERVATION
-Route::group([], function () {
-    Route::post('reservation', [ReservationSwaggerController::class, 'reserves']);
-    Route::get('reservation/{id}', [ReservationSwaggerController::class, 'getReservation']);
-    Route::put('reservation/{id}', [ReservationSwaggerController::class, 'update']);
-    Route::delete('reservation/{id}', [ReservationSwaggerController::class, 'destroy']);
-});
+Route::post('/reservation', [ReservationController::class, 'reserves']);
+Route::get('/reservation', [ReservationController::class, 'getAllReservations']);
+Route::get('/reservation/{id}', [ReservationController::class, 'getReservation']);
+Route::get('/reservation/filter', [ReservationController::class, 'getByStatus']);
+Route::put('/reservation/{id}', [ReservationController::class, 'update']);
+Route::delete('/reservation/{id}', [ReservationController::class, 'destroy']);
+
 
 Route::group([], function () {
     // Route untuk menambahkan review baru
