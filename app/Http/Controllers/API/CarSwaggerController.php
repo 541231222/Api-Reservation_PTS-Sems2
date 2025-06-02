@@ -56,7 +56,7 @@ class CarSwaggerController extends Controller
  *     @OA\Response(response=500, description="Terjadi kesalahan saat menambahkan mobil")
  * )
  */
-    public function store(Request $request)
+    public function store(CarRequest $request)
     {
         try {
             $data = $request->validated();
@@ -253,7 +253,7 @@ class CarSwaggerController extends Controller
  *     @OA\Response(response=500, description="Terjadi kesalahan saat memperbarui data mobil")
  * )
  */
-    public function update(Request $request, $id)
+    public function update(CarRequest $request, $id)
     {
         try {
             $car = Car::find($id);
