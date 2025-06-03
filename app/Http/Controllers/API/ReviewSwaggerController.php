@@ -178,4 +178,63 @@ class ReviewSwaggerController extends Controller
 
         return response()->json(['message' => 'Review deleted']);
     }
+
+        /**
+     * @OA\Get(
+     *     path="/api/reviews/car/{car_id}",
+     *     tags={"Reviews"},
+     *     summary="Get reviews for a specific car",
+     *     @OA\Parameter(
+     *         name="car_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of reviews for the car",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Review"))
+     *     ),
+     *     @OA\Response(response=404, description="No reviews found")
+     * )
+     */
+    public function getByCar($car_id)
+    {
+        $reviews = Review::where('car_id', $car_id)->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json(['message' => 'No reviews found'], 404);
+        }
+
+        return ReviewResource::collection($reviews);
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/reviews/average/{car_id}",
+     *     tags={"Reviews"},
+     *     summary="Get average rating for a car",
+     *     @OA\Parameter(
+     *         name="car_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Average rating",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="average", type="number", format="float", example=4.3)
+     *         )
+     *     )
+     * )
+     */
+    public function averageRating($car_id)
+    {
+        $average = Review::where('car_id', $car_id)->avg('rating');
+
+        return response()->json(['average' => round($average, 2)]);
+    }
+
 }

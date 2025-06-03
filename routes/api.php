@@ -27,9 +27,17 @@ Route::get('/user', [UserSwaggerController::class, 'getAllUsers']);
 
 // Reviews
 Route::get('reviews', [ReviewSwaggerController::class, 'index']);
+Route::get('/reviews/car/{car_id}', [ReviewSwaggerController::class, 'getByCar']);
+Route::get('/reviews/average/{car_id}', [ReviewSwaggerController::class, 'averageRating']);
 
 // Wishlists
 Route::get('wishlists/{id}', [WishlistSwaggerController::class, 'show']);
+Route::get('/user/{user_id}', [WishlistSwaggerController::class, 'getByUser']);
+Route::get('/check/{user_id}/{car_id}', [WishlistSwaggerController::class, 'check']);
+Route::delete('/user/{user_id}/car/{car_id}', [WishlistSwaggerController::class, 'destroyByUserAndCar']);
+Route::get('/paginate', [WishlistSwaggerController::class, 'paginate']);
+Route::get('/count/{user_id}', [WishlistSwaggerController::class, 'countByUser']);
+Route::delete('/clear/{user_id}', [WishlistSwaggerController::class, 'clearByUser']);
 
 // Authentication
 Route::post('/register', RegisterController::class);

@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000",
+            "url": "http://localhost:8000",
             "description": "API Server"
         }
     ],
@@ -969,52 +969,6 @@
                 ]
             }
         },
-        "/api/user/register": {
-            "post": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Registrasi pengguna baru",
-                "operationId": "0234738a28358a02b0cfe4f8234a85bb",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "John Doe"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "secret123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "User Berhasil Dibuat"
-                    },
-                    "500": {
-                        "description": "Kesalahan Server"
-                    }
-                }
-            }
-        },
         "/api/user/{id}": {
             "get": {
                 "tags": [
@@ -1215,12 +1169,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/wishlists/{id}": {
@@ -1255,67 +1204,6 @@
                         "description": "Not found"
                     }
                 }
-            },
-            "put": {
-                "tags": [
-                    "Wishlist"
-                ],
-                "summary": "Update wishlist item",
-                "operationId": "84c534f5b251d2167878e7669f0f59b7",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "user_id",
-                                    "car_id"
-                                ],
-                                "properties": {
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "car_id": {
-                                        "type": "integer",
-                                        "example": 2
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Wishlist"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             },
             "delete": {
                 "tags": [
@@ -1353,12 +1241,218 @@
                     "404": {
                         "description": "Not found"
                     }
-                },
-                "security": [
+                }
+            }
+        },
+        "/api/wishlists/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Get wishlist by user ID",
+                "operationId": "f1439c2733157b730b67167450e9a303",
+                "parameters": [
                     {
-                        "bearerAuth": []
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Wishlist"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/wishlists/check": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Check if a car is in the user's wishlist",
+                "operationId": "19603447c2b2da05632ddf112903ba71",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "car_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "exists": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wishlists/paginate": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Paginated wishlists with optional sorting",
+                "operationId": "a043c6bbf1c3032b21bd65be0f5fab11",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort by created_at (asc|desc)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Wishlist"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wishlists/count/{user_id}": {
+            "get": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Count wishlist items per user",
+                "operationId": "b7a4b06ca865cf169ab032eff0bd6c49",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wishlists/clear/{user_id}": {
+            "delete": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Clear all wishlist items for a user",
+                "operationId": "cb1b48b1cab46bbc457000946ce0436c",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Wishlist cleared"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/login": {

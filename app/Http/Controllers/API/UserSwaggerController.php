@@ -13,41 +13,6 @@ use Illuminate\Support\Facades\Hash;
 class UserSwaggerController extends Controller
 {
     /**
-     * @OA\Post(
-     *     path="/api/user/register",
-     *     summary="Registrasi pengguna baru",
-     *     tags={"User"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password"},
-     *             @OA\Property(property="name", type="string", example="John Doe"),
-     *             @OA\Property(property="email", type="string", example="john@example.com"),
-     *             @OA\Property(property="password", type="string", example="secret123")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="User Berhasil Dibuat"),
-     *     @OA\Response(response=500, description="Kesalahan Server")
-     * )
-     */
-    public function register(RegisterRequest $request)
-    {
-        try {
-            $data = $request->validated();
-
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]);
-
-            return response()->json(["messages" => "User Berhasil Dibuat", "user" => new UserResource($user)], 200);
-        } catch (\Exception $e) {
-            return response()->json($e, 500);
-        }
-    }
-
-    /**
      * @OA\Get(
      *     path="/api/user/{id}",
      *     summary="Ambil data pengguna berdasarkan ID",
