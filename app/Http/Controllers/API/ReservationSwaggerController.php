@@ -3,43 +3,33 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Reservation;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Requests\UpdateReservationStatusRequest;
 use App\Http\Resources\ReservationResource;
-use Illuminate\Http\Request;
+use App\Models\Reservation;
 
 class ReservationSwaggerController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/reservation",
+     *     path="/api/reservation",
+     *     summary="Buat reservasi mobil",
      *     tags={"Reservation"},
-     *     summary="Create a new reservation",
-     *     description="Store a new reservation for a user and car",
-     *     operationId="reserveCar",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"user_id", "car_id", "start_date", "end_date", "proof_of_payment", "payment_status", "status"},
      *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="car_id", type="integer", example=1),
-     *             @OA\Property(property="start_date", type="string", format="date", example="2025-05-01"),
-     *             @OA\Property(property="end_date", type="string", format="date", example="2025-05-05"),
-     *             @OA\Property(property="proof_of_payment", type="string", example="payment.jpg"),
+     *             @OA\Property(property="car_id", type="integer", example=2),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2025-06-01"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2025-06-05"),
+     *             @OA\Property(property="proof_of_payment", type="string", example="bukti-transfer.jpg"),
      *             @OA\Property(property="payment_status", type="string", example="paid"),
-     *             @OA\Property(property="status", type="string", example="confirmed")
+     *             @OA\Property(property="status", type="string", example="pending")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Reservation successfully created",
-     *         @OA\JsonContent(ref="#/components/schemas/ReservationResource")
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Error while creating reservation"
-     *     )
+     *     @OA\Response(response=200, description="Pemesanan Berhasil Dibuat"),
+     *     @OA\Response(response=500, description="Kesalahan server")
      * )
      */
     public function reserves(ReservationRequest $request)
@@ -47,12 +37,16 @@ class ReservationSwaggerController extends Controller
         try {
             $data = $request->validated();
 
-            $reservation = Reservation::create($data);
-
-            return response()->json([
-                "message" => "Pemesanan berhasil dibuat",
-                "reservation" => new ReservationResource($reservation)
-            ], 200);
+            $reserve = Reservation::create([
+                'user_id' => $data['user_id'],
+                'car_id' => $data['car_id'],
+                'start_date' => $data['start_date'],
+                'end_date' => $data['end_date'],
+                'proof_of_payment' => $data['proof_of_payment'],
+                'payment_status' => $data['payment_status'],
+                'status' => $data['status']
+            ]);
+            return response()->json(["messages" => "Pemesanan Berhasil Dibuat", "reservation" => new ReservationResource($reserve)], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -60,26 +54,17 @@ class ReservationSwaggerController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/reservation/{id}",
+     *     path="/api/reservation/{id}",
+     *     summary="Ambil detail reservasi berdasarkan ID",
      *     tags={"Reservation"},
-     *     summary="Get a reservation by ID",
-     *     description="Retrieve details of a reservation including user and car information",
-     *     operationId="getReservation",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Reservation details retrieved successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/ReservationResource")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Reservation not found"
-     *     )
+     *     @OA\Response(response=200, description="Detail reservasi ditemukan"),
+     *     @OA\Response(response=404, description="Reservasi tidak ditemukan")
      * )
      */
     public function getReservation($id)
@@ -90,16 +75,92 @@ class ReservationSwaggerController extends Controller
             return response()->json(['message' => 'Reservation not found'], 404);
         }
 
-        return response()->json(new ReservationResource($reservation), 200);
+        $data = [
+            'user' => [
+                'id' => $reservation->user->id,
+                'name' => $reservation->user->name,
+            ],
+            'car' => [
+                'id' => $reservation->car->id,
+                'name' => $reservation->car->name,
+                'brand_name' => $reservation->car->brand_name
+            ],
+            'reservation' => [
+                'id' => $reservation->id,
+                'start_date' => $reservation->start_date,
+                'end_date' => $reservation->end_date,
+                'proof_of_payment' => $reservation->proof_of_payment,
+                'payment_status' => $reservation->payment_status,
+                'status' => $reservation->status,
+            ],
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/reservation",
+     *     summary="Ambil semua reservasi",
+     *     tags={"Reservation"},
+     *     @OA\Response(response=200, description="Data reservasi berhasil diambil"),
+     *     @OA\Response(response=404, description="Tidak ada data reservasi ditemukan")
+     * )
+     */
+    public function getAllReservations()
+    {
+        $reservations = Reservation::with(['user', 'car'])->get();
+
+        if ($reservations->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada data reservasi ditemukan.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data reservasi berhasil diambil.',
+            'data' => ReservationResource::collection($reservations)
+        ], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/reservation/filter",
+     *     summary="Filter reservasi berdasarkan status dan/atau payment_status",
+     *     tags={"Reservation"},
+     *     @OA\Parameter(name="status", in="query", required=false, @OA\Schema(type="string")),
+     *     @OA\Parameter(name="payment_status", in="query", required=false, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Data reservasi berhasil diambil"),
+     *     @OA\Response(response=404, description="Tidak ada reservasi ditemukan")
+     * )
+     */
+    public function getByStatus(ReservationRequest $request)
+    {
+        $status = $request->query('status');
+        $paymentStatus = $request->query('payment_status');
+
+        $reservations = Reservation::with(['user', 'car'])
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($paymentStatus, function ($query) use ($paymentStatus) {
+                $query->where('payment_status', $paymentStatus);
+            })
+            ->get();
+
+        if ($reservations->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada reservasi ditemukan untuk kriteria yang diberikan.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Data reservasi berhasil diambil.',
+            'data' => ReservationResource::collection($reservations)
+        ], 200);
     }
 
     /**
      * @OA\Put(
-     *     path="/reservation/{id}",
+     *     path="/api/reservation/{id}",
+     *     summary="Perbarui status dan payment_status reservasi",
      *     tags={"Reservation"},
-     *     summary="Update reservation status",
-     *     description="Update the payment status and status of the reservation",
-     *     operationId="updateReservationStatus",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -114,15 +175,9 @@ class ReservationSwaggerController extends Controller
      *             @OA\Property(property="status", type="string", example="confirmed")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Reservation status updated successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/ReservationResource")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Reservation not found"
-     *     )
+     *     @OA\Response(response=200, description="Status pemesanan berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Reservasi tidak ditemukan"),
+     *     @OA\Response(response=500, description="Kesalahan server")
      * )
      */
     public function update(UpdateReservationStatusRequest $request, $id)
@@ -134,12 +189,16 @@ class ReservationSwaggerController extends Controller
                 return response()->json(['error' => 'Reservasi tidak ditemukan'], 404);
             }
 
-            $reservation->update($request->validated());
+            $reservation->update([
+                'payment_status' => $request->payment_status,
+                'status' => $request->status
+            ]);
 
             return response()->json([
                 'message' => 'Status pemesanan berhasil diperbarui',
                 'reservation' => new ReservationResource($reservation->load(['car', 'user']))
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -147,25 +206,18 @@ class ReservationSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/reservation/{id}",
+     *     path="/api/reservation/{id}",
+     *     summary="Hapus reservasi berdasarkan ID",
      *     tags={"Reservation"},
-     *     summary="Delete a reservation",
-     *     description="Delete a reservation by its ID",
-     *     operationId="deleteReservation",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Reservation successfully deleted"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Reservation not found"
-     *     )
+     *     @OA\Response(response=200, description="Reservasi berhasil dihapus"),
+     *     @OA\Response(response=404, description="Reservasi tidak ditemukan"),
+     *     @OA\Response(response=500, description="Kesalahan server")
      * )
      */
     public function destroy($id)

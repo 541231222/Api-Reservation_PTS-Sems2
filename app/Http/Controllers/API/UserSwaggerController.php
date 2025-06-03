@@ -3,151 +3,86 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
-/**
- * @OA\Post(
- *     path="/register",
- *     tags={"User"},
- *     summary="Register a new user",
- *     description="Create a new user with provided name, email, and password",
- *     operationId="registerUser",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"name", "email", "password"},
- *             @OA\Property(property="name", type="string", example="John Doe"),
- *             @OA\Property(property="email", type="string", example="johndoe@example.com"),
- *             @OA\Property(property="password", type="string", example="secret123"),
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="User successfully created",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(ref="#/components/schemas/UserResource")
- *         )
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Error while creating user"
- *     )
- * )
- *
- * @OA\Get(
- *     path="/user/{id}",
- *     tags={"User"},
- *     summary="Get user data by ID",
- *     description="Retrieve details of a specific user by their ID",
- *     operationId="getUserData",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="User data retrieved successfully",
- *         @OA\MediaType(
- *             mediaType="application/json",
- *             @OA\Schema(ref="#/components/schemas/UserResource")
- *         )
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="User not found"
- *     )
- * )
- *
- * @OA\Put(
- *     path="/user/{id}",
- *     tags={"User"},
- *     summary="Update user data",
- *     description="Update name, email, and optionally password of a user",
- *     operationId="updateUser",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"name", "email"},
- *             @OA\Property(property="name", type="string", example="John Doe Updated"),
- *             @OA\Property(property="email", type="string", example="john.doe.updated@example.com"),
- *             @OA\Property(property="password", type="string", example="newpassword123"),
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="User data updated successfully"
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="User not found"
- *     )
- * )
- *
- * @OA\Delete(
- *     path="/user/{id}",
- *     tags={"User"},
- *     summary="Delete a user",
- *     description="Delete a user by their ID",
- *     operationId="deleteUser",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="User successfully deleted"
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="User not found"
- *     )
- * )
- */
 class UserSwaggerController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/user/register",
+     *     summary="Registrasi pengguna baru",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", example="secret123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="User Berhasil Dibuat"),
+     *     @OA\Response(response=500, description="Kesalahan Server")
+     * )
+     */
     public function register(RegisterRequest $request)
     {
         try {
-            // Validate the request and create a new user
             $data = $request->validated();
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
 
-            return response()->json([
-                "messages" => "User Berhasil Dibuat",
-                "user" => new UserResource($user)
-            ], 200);
+            return response()->json(["messages" => "User Berhasil Dibuat", "user" => new UserResource($user)], 200);
         } catch (\Exception $e) {
             return response()->json($e, 500);
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/user/{id}",
+     *     summary="Ambil data pengguna berdasarkan ID",
+     *     tags={"User"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Data pengguna ditemukan")
+     * )
+     */
     public function getData($id)
     {
         $data = User::find($id);
         return response()->json(["users" => new UserResource($data)], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/{id}",
+     *     summary="Hapus pengguna berdasarkan ID",
+     *     tags={"User"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Pengguna berhasil dihapus"),
+     *     @OA\Response(response=404, description="Pengguna tidak ditemukan"),
+     *     @OA\Response(response=500, description="Kesalahan server")
+     * )
+     */
     public function destroy($id)
     {
         try {
@@ -165,6 +100,56 @@ class UserSwaggerController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="Ambil semua pengguna",
+     *     tags={"User"},
+     *     @OA\Response(response=200, description="Daftar semua pengguna berhasil diambil"),
+     *     @OA\Response(response=500, description="Kesalahan server")
+     * )
+     */
+    public function getAllUsers()
+    {
+        try {
+            $users = User::all();
+            return response()->json([
+                'message' => 'Daftar semua pengguna berhasil diambil',
+                'users' => UserResource::collection($users)
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data pengguna',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/user/{id}",
+     *     summary="Perbarui data pengguna",
+     *     tags={"User"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email"},
+     *             @OA\Property(property="name", type="string", example="John Doe Updated"),
+     *             @OA\Property(property="email", type="string", example="john_updated@example.com"),
+     *             @OA\Property(property="password", type="string", example="newpassword", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Data pengguna berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Pengguna tidak ditemukan"),
+     *     @OA\Response(response=500, description="Kesalahan server")
+     * )
+     */
     public function update(UpdateUserRequest $request, $id)
     {
         try {
