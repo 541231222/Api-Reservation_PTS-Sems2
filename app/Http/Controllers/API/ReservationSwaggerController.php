@@ -7,6 +7,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Http\Requests\UpdateReservationStatusRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
+use Request;
 
 class ReservationSwaggerController extends Controller
 {
@@ -15,6 +16,13 @@ class ReservationSwaggerController extends Controller
      *     path="/api/reservation",
      *     summary="Buat reservasi mobil",
      *     tags={"Reservation"},
+     *     @OA\Parameter(
+     *         name="Accept",
+     *         in="header",
+     *         required=true,
+     *         description="Response format",
+     *         @OA\Schema(type="string", default="application/json")
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -101,15 +109,39 @@ class ReservationSwaggerController extends Controller
     /**
      * @OA\Get(
      *     path="/api/reservation",
-     *     summary="Ambil semua reservasi",
+     *     summary="Ambil semua reservasi dengan filter opsional",
      *     tags={"Reservation"},
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=false,
+     *         description="Filter berdasarkan status reservasi",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="payment_status",
+     *         in="query",
+     *         required=false,
+     *         description="Filter berdasarkan status pembayaran",
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(response=200, description="Data reservasi berhasil diambil"),
      *     @OA\Response(response=404, description="Tidak ada data reservasi ditemukan")
      * )
      */
-    public function getAllReservations()
+    public function getAllReservations(ReservationRequest $request)
     {
-        $reservations = Reservation::with(['user', 'car'])->get();
+        $query = Reservation::with(['user', 'car']);
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        $reservations = $query->get();
 
         if ($reservations->isEmpty()) {
             return response()->json(['message' => 'Tidak ada data reservasi ditemukan.'], 404);
@@ -121,40 +153,6 @@ class ReservationSwaggerController extends Controller
         ], 200);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/reservation/filter",
-     *     summary="Filter reservasi berdasarkan status dan/atau payment_status",
-     *     tags={"Reservation"},
-     *     @OA\Parameter(name="status", in="query", required=false, @OA\Schema(type="string")),
-     *     @OA\Parameter(name="payment_status", in="query", required=false, @OA\Schema(type="string")),
-     *     @OA\Response(response=200, description="Data reservasi berhasil diambil"),
-     *     @OA\Response(response=404, description="Tidak ada reservasi ditemukan")
-     * )
-     */
-    public function getByStatus(ReservationRequest $request)
-    {
-        $status = $request->query('status');
-        $paymentStatus = $request->query('payment_status');
-
-        $reservations = Reservation::with(['user', 'car'])
-            ->when($status, function ($query) use ($status) {
-                $query->where('status', $status);
-            })
-            ->when($paymentStatus, function ($query) use ($paymentStatus) {
-                $query->where('payment_status', $paymentStatus);
-            })
-            ->get();
-
-        if ($reservations->isEmpty()) {
-            return response()->json(['message' => 'Tidak ada reservasi ditemukan untuk kriteria yang diberikan.'], 404);
-        }
-
-        return response()->json([
-            'message' => 'Data reservasi berhasil diambil.',
-            'data' => ReservationResource::collection($reservations)
-        ], 200);
-    }
 
     /**
      * @OA\Put(

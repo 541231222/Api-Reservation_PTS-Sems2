@@ -31,31 +31,31 @@ use App\Models\Car;
 class CarSwaggerController extends Controller
 {
     /**
- * @OA\Post(
- *     path="/api/car",
- *     summary="Tambah mobil baru",
- *     tags={"Car"},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"user_id","category_id","name","brand_name","price_per_day","stock"},
- *             @OA\Property(property="user_id", type="integer", example=1),
- *             @OA\Property(property="category_id", type="integer", example=2),
- *             @OA\Property(property="name", type="string", example="Avanza"),
- *             @OA\Property(property="image", type="string", example="avanza.jpg"),
- *             @OA\Property(property="brand_name", type="string", example="Toyota"),
- *             @OA\Property(property="price_per_day", type="number", format="float", example=350000),
- *             @OA\Property(property="stock", type="integer", example=10),
- *         )
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Mobil berhasil ditambahkan",
- *         @OA\JsonContent(ref="#/components/schemas/CarResource")
- *     ),
- *     @OA\Response(response=500, description="Terjadi kesalahan saat menambahkan mobil")
- * )
- */
+     * @OA\Post(
+     *     path="/api/car",
+     *     summary="Tambah mobil baru",
+     *     tags={"Car"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"user_id","category_id","name","brand_name","price_per_day","stock"},
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="category_id", type="integer", example=2),
+     *             @OA\Property(property="name", type="string", example="Avanza"),
+     *             @OA\Property(property="image", type="string", example="avanza.jpg"),
+     *             @OA\Property(property="brand_name", type="string", example="Toyota"),
+     *             @OA\Property(property="price_per_day", type="number", format="float", example=350000),
+     *             @OA\Property(property="stock", type="integer", example=10),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Mobil berhasil ditambahkan",
+     *         @OA\JsonContent(ref="#/components/schemas/CarResource")
+     *     ),
+     *     @OA\Response(response=500, description="Terjadi kesalahan saat menambahkan mobil")
+     * )
+     */
     public function store(CarRequest $request)
     {
         try {
@@ -130,8 +130,57 @@ class CarSwaggerController extends Controller
     /**
      * @OA\Get(
      *     path="/api/car",
-     *     summary="Ambil semua data mobil",
+     *     summary="Ambil semua data mobil dengan filter opsional",
      *     tags={"Car"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="query",
+     *         required=false,
+     *         description="Filter berdasarkan user ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=false,
+     *         description="Filter berdasarkan nama mobil",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="brand_name",
+     *         in="query",
+     *         required=false,
+     *         description="Filter berdasarkan merek mobil",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="price_min",
+     *         in="query",
+     *         required=false,
+     *         description="Harga minimum sewa per hari",
+     *         @OA\Schema(type="number", format="float")
+     *     ),
+     *     @OA\Parameter(
+     *         name="price_max",
+     *         in="query",
+     *         required=false,
+     *         description="Harga maksimum sewa per hari",
+     *         @OA\Schema(type="number", format="float")
+     *     ),
+     *     @OA\Parameter(
+     *         name="stock_min",
+     *         in="query",
+     *         required=false,
+     *         description="Stock minimal",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="stock_max",
+     *         in="query",
+     *         required=false,
+     *         description="Stock maksimal",
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Semua data mobil",
@@ -141,11 +190,43 @@ class CarSwaggerController extends Controller
      *     )
      * )
      */
-    public function getAllData()
+    public function getAllData(Request $request)
     {
-        $data = Car::all();
+        $query = Car::query();
+
+        if ($request->has('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->has('brand_name')) {
+            $query->where('brand_name', 'like', '%' . $request->brand_name . '%');
+        }
+
+        if ($request->has('price_min')) {
+            $query->where('price_per_day', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max')) {
+            $query->where('price_per_day', '<=', $request->price_max);
+        }
+
+        if ($request->has('stock_min')) {
+            $query->where('stock', '>=', $request->stock_min);
+        }
+
+        if ($request->has('stock_max')) {
+            $query->where('stock', '<=', $request->stock_max);
+        }
+
+        $data = $query->get();
+
         return response()->json(["cars" => CarResource::collection($data)], 200);
     }
+
 
     /**
      * @OA\Delete(
@@ -220,39 +301,39 @@ class CarSwaggerController extends Controller
         }
     }
 
- /**
- * @OA\Put(
- *     path="/api/car/{id}",
- *     summary="Update data mobil",
- *     tags={"Car"},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="ID mobil yang akan diupdate",
- *         required=true,
- *         @OA\Schema(type="integer", example=1)
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="user_id", type="integer", example=1),
- *             @OA\Property(property="category_id", type="integer", example=2),
- *             @OA\Property(property="name", type="string", example="Avanza Updated"),
- *             @OA\Property(property="image", type="string", example="avanza_new.jpg"),
- *             @OA\Property(property="brand_name", type="string", example="Toyota"),
- *             @OA\Property(property="price_per_day", type="number", format="float", example=370000),
- *             @OA\Property(property="stock", type="integer", example=8),
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Data mobil berhasil diperbarui",
- *         @OA\JsonContent(ref="#/components/schemas/CarResource")
- *     ),
- *     @OA\Response(response=404, description="Mobil tidak ditemukan"),
- *     @OA\Response(response=500, description="Terjadi kesalahan saat memperbarui data mobil")
- * )
- */
+    /**
+     * @OA\Put(
+     *     path="/api/car/{id}",
+     *     summary="Update data mobil",
+     *     tags={"Car"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID mobil yang akan diupdate",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="category_id", type="integer", example=2),
+     *             @OA\Property(property="name", type="string", example="Avanza Updated"),
+     *             @OA\Property(property="image", type="string", example="avanza_new.jpg"),
+     *             @OA\Property(property="brand_name", type="string", example="Toyota"),
+     *             @OA\Property(property="price_per_day", type="number", format="float", example=370000),
+     *             @OA\Property(property="stock", type="integer", example=8),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data mobil berhasil diperbarui",
+     *         @OA\JsonContent(ref="#/components/schemas/CarResource")
+     *     ),
+     *     @OA\Response(response=404, description="Mobil tidak ditemukan"),
+     *     @OA\Response(response=500, description="Terjadi kesalahan saat memperbarui data mobil")
+     * )
+     */
     public function update(CarRequest $request, $id)
     {
         try {

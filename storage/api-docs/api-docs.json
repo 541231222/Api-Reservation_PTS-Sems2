@@ -24,8 +24,75 @@
                 "tags": [
                     "Car"
                 ],
-                "summary": "Ambil semua data mobil",
+                "summary": "Ambil semua data mobil dengan filter opsional",
                 "operationId": "c5e4dc731be2f3d08b7f82918e701076",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Filter berdasarkan user ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filter berdasarkan nama mobil",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "brand_name",
+                        "in": "query",
+                        "description": "Filter berdasarkan merek mobil",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "price_min",
+                        "in": "query",
+                        "description": "Harga minimum sewa per hari",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "price_max",
+                        "in": "query",
+                        "description": "Harga maksimum sewa per hari",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "stock_min",
+                        "in": "query",
+                        "description": "Stock minimal",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "stock_max",
+                        "in": "query",
+                        "description": "Stock maksimal",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Semua data mobil",
@@ -426,8 +493,28 @@
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "Ambil semua reservasi",
+                "summary": "Ambil semua reservasi dengan filter opsional",
                 "operationId": "0a552980e5cd60fabc817e71e3124529",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter berdasarkan status reservasi",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_status",
+                        "in": "query",
+                        "description": "Filter berdasarkan status pembayaran",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Data reservasi berhasil diambil"
@@ -443,6 +530,18 @@
                 ],
                 "summary": "Buat reservasi mobil",
                 "operationId": "3dab9f4bd788b61ac243ed1e65a3644a",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Response format",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "application/json"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -607,41 +706,6 @@
                     },
                     "500": {
                         "description": "Kesalahan server"
-                    }
-                }
-            }
-        },
-        "/api/reservation/filter": {
-            "get": {
-                "tags": [
-                    "Reservation"
-                ],
-                "summary": "Filter reservasi berdasarkan status dan/atau payment_status",
-                "operationId": "21b1c0707c568e54f7e2ea43263c57c5",
-                "parameters": [
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "payment_status",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Data reservasi berhasil diambil"
-                    },
-                    "404": {
-                        "description": "Tidak ada reservasi ditemukan"
                     }
                 }
             }
@@ -1352,7 +1416,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         }
     },
