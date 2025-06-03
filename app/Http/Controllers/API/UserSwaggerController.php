@@ -72,6 +72,7 @@ class UserSwaggerController extends Controller
      *     path="/api/user/{id}",
      *     summary="Hapus pengguna berdasarkan ID",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -130,6 +131,7 @@ class UserSwaggerController extends Controller
      *     path="/api/user/{id}",
      *     summary="Perbarui data pengguna",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

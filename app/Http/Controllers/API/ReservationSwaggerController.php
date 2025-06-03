@@ -16,6 +16,7 @@ class ReservationSwaggerController extends Controller
      *     path="/api/reservation",
      *     summary="Buat reservasi mobil",
      *     tags={"Reservation"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="Accept",
      *         in="header",
@@ -157,8 +158,9 @@ class ReservationSwaggerController extends Controller
     /**
      * @OA\Put(
      *     path="/api/reservation/{id}",
-     *     summary="Perbarui status dan payment_status reservasi",
+     *     summary="Perbarui status reservasi",
      *     tags={"Reservation"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -205,8 +207,9 @@ class ReservationSwaggerController extends Controller
     /**
      * @OA\Delete(
      *     path="/api/reservation/{id}",
-     *     summary="Hapus reservasi berdasarkan ID",
+     *     summary="Hapus reservasi",
      *     tags={"Reservation"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Info(
  *     version="1.0.0",
  *     title="API Documentation",
- *     description="Documentation for the Bookstore API",
+ *     description="Documentation for the Car Reservation API",
  *     @OA\Contact(
  *         email="admin@example.com"
  *     ),
@@ -23,6 +23,12 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Server(
  *     url=L5_SWAGGER_CONST_HOST,
  *     description="API Server"
+ * )
+ *  * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
  * )
  */
 class Controller extends BaseController

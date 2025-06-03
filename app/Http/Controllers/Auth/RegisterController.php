@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
  *     path="/api/register",
  *     summary="Register new user",
  *     tags={"Auth"},
- *     security={{"sanctum": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(

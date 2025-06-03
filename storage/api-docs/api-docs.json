@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Documentation",
-        "description": "Documentation for the Bookstore API",
+        "description": "Documentation for the Car Reservation API",
         "contact": {
             "email": "admin@example.com"
         },
@@ -183,7 +183,12 @@
                     "500": {
                         "description": "Terjadi kesalahan saat menambahkan mobil"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/car/category/{categoryId}": {
@@ -334,7 +339,12 @@
                     "500": {
                         "description": "Terjadi kesalahan saat memperbarui data mobil"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -360,7 +370,12 @@
                     "404": {
                         "description": "Mobil tidak ditemukan"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/category": {
@@ -408,7 +423,12 @@
                     "500": {
                         "description": "Terjadi kesalahan saat menambahkan kategori"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/category/{id}": {
@@ -457,7 +477,12 @@
                     "500": {
                         "description": "Terjadi kesalahan saat memperbarui kategori"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -485,7 +510,12 @@
                     "500": {
                         "description": "Terjadi kesalahan saat menghapus kategori"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/reservation": {
@@ -600,7 +630,12 @@
                     "500": {
                         "description": "Kesalahan server"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/reservation/{id}": {
@@ -633,7 +668,7 @@
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "Perbarui status dan payment_status reservasi",
+                "summary": "Perbarui status reservasi",
                 "operationId": "a9f386ea1bc748af19048475ae1f5748",
                 "parameters": [
                     {
@@ -679,13 +714,18 @@
                     "500": {
                         "description": "Kesalahan server"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "Hapus reservasi berdasarkan ID",
+                "summary": "Hapus reservasi",
                 "operationId": "1f9978e68a9454b50c6727c27b5a84dd",
                 "parameters": [
                     {
@@ -707,7 +747,12 @@
                     "500": {
                         "description": "Kesalahan server"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/reviews": {
@@ -785,7 +830,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/reviews/{id}": {
@@ -868,7 +918,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -906,7 +961,12 @@
                     "404": {
                         "description": "Review not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/user/register": {
@@ -1033,7 +1093,12 @@
                     "500": {
                         "description": "Kesalahan server"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1061,7 +1126,12 @@
                     "500": {
                         "description": "Kesalahan server"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/user": {
@@ -1145,7 +1215,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/wishlists/{id}": {
@@ -1180,6 +1255,67 @@
                         "description": "Not found"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "Wishlist"
+                ],
+                "summary": "Update wishlist item",
+                "operationId": "84c534f5b251d2167878e7669f0f59b7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "car_id"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "car_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Wishlist"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1217,7 +1353,12 @@
                     "404": {
                         "description": "Not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/login": {
@@ -1320,7 +1461,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -1416,12 +1557,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
+                }
             }
         }
     },

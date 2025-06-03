@@ -16,6 +16,7 @@ class CategorySwaggerController extends Controller
      *     path="/api/category",
      *     summary="Tambah kategori",
      *     tags={"Category"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -66,6 +67,7 @@ class CategorySwaggerController extends Controller
      *     path="/api/category/{id}",
      *     summary="Hapus kategori",
      *     tags={"Category"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -100,6 +102,7 @@ class CategorySwaggerController extends Controller
      *     path="/api/category/{id}",
      *     summary="Perbarui data kategori",
      *     tags={"Category"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

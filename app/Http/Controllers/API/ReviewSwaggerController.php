@@ -52,6 +52,7 @@ class ReviewSwaggerController extends Controller
      * @OA\Post(
      *     path="/api/reviews",
      *     tags={"Reviews"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Create a new review",
      *     @OA\RequestBody(
      *         required=true,
@@ -112,6 +113,7 @@ class ReviewSwaggerController extends Controller
      * @OA\Put(
      *     path="/api/reviews/{id}",
      *     tags={"Reviews"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Update an existing review",
      *     @OA\Parameter(
      *         name="id",
@@ -151,6 +153,7 @@ class ReviewSwaggerController extends Controller
      * @OA\Delete(
      *     path="/api/reviews/{id}",
      *     tags={"Reviews"},
+     *     security={{"bearerAuth":{}}},
      *     summary="Delete a review by ID",
      *     @OA\Parameter(
      *         name="id",

@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  *     path="/api/logout",
  *     summary="Logout user",
  *     tags={"Auth"},
- *     security={{"sanctum":{}}},
+ *     security={{"bearerAuth":{}}},
  *     @OA\Response(
  *         response=200,
  *         description="Successfully logged out",

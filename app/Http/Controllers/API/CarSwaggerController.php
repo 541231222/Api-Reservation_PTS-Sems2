@@ -35,6 +35,7 @@ class CarSwaggerController extends Controller
      *     path="/api/car",
      *     summary="Tambah mobil baru",
      *     tags={"Car"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -233,6 +234,7 @@ class CarSwaggerController extends Controller
      *     path="/api/car/{id}",
      *     summary="Hapus mobil",
      *     tags={"Car"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -306,6 +308,7 @@ class CarSwaggerController extends Controller
      *     path="/api/car/{id}",
      *     summary="Update data mobil",
      *     tags={"Car"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
