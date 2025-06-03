@@ -45,7 +45,6 @@ Route::delete('/user/{id}', [UserSwaggerController::class, 'destroy']);
 Route::post('/reservation', [ReservationSwaggerController::class, 'reserves']);
 Route::get('/reservation', [ReservationSwaggerController::class, 'getAllReservations']);
 Route::get('/reservation/{id}', [ReservationSwaggerController::class, 'getReservation']);
-Route::get('/reservation/filter', [ReservationSwaggerController::class, 'getByStatus']);
 Route::put('/reservation/{id}', [ReservationSwaggerController::class, 'update']);
 Route::delete('/reservation/{id}', [ReservationSwaggerController::class, 'destroy']);
 
