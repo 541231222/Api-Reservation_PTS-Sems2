@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $token = $user->createToken('rentalmobil')->plainTextToken;
+        $token = $user->createToken('API Token')->plainTextToken;
 
         return response()->json([
             'user' => $user,

@@ -50,7 +50,7 @@ class LoginController extends Controller
         $user = auth()->user();
 
         return response()->json([
-            'token' => $user->createToken('gajikaryawan')->plainTextToken
+            'token' => $user->createToken('API Token')->plainTextToken
         ]);
     }
 }
