@@ -33,7 +33,7 @@ class ReviewSwaggerController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/reviews",
+     *     path="/api/reviews/all",
      *     tags={"Reviews"},
      *     summary="Get list of all reviews",
      *     @OA\Response(

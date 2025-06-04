@@ -26,9 +26,11 @@ Route::get('/user/{id}', [UserSwaggerController::class, 'getData']);
 Route::get('/user', [UserSwaggerController::class, 'getAllUsers']);
 
 // Reviews
-Route::get('reviews', [ReviewSwaggerController::class, 'index']);
+Route::get('reviews', [ReviewSwaggerController::class, 'show']);
+Route::get('reviews/all', [ReviewSwaggerController::class, 'index']);
 
 // Wishlists
+Route::get('wishlists/all', [WishlistSwaggerController::class, 'index']);
 Route::get('wishlists/{id}', [WishlistSwaggerController::class, 'show']);
 
 // Authentication

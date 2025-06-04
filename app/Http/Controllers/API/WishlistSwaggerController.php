@@ -27,7 +27,7 @@ class WishlistSwaggerController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/wishlists",
+     *     path="/api/wishlists/all",
      *     tags={"Wishlist"},
      *     summary="List all wishlists",
      *     @OA\Response(

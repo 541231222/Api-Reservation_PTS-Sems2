@@ -755,13 +755,13 @@
                 ]
             }
         },
-        "/api/reviews": {
+        "/api/reviews/all": {
             "get": {
                 "tags": [
                     "Reviews"
                 ],
                 "summary": "Get list of all reviews",
-                "operationId": "2cc43516fdd766117722b884a497ed55",
+                "operationId": "638177f6f4ae146796c095013ff4c1f1",
                 "responses": {
                     "200": {
                         "description": "List of reviews",
@@ -777,7 +777,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/reviews": {
             "post": {
                 "tags": [
                     "Reviews"
@@ -1151,13 +1153,13 @@
                 }
             }
         },
-        "/api/wishlists": {
+        "/api/wishlists/all": {
             "get": {
                 "tags": [
                     "Wishlist"
                 ],
                 "summary": "List all wishlists",
-                "operationId": "096c25413ff7e2395b9f392002c004dc",
+                "operationId": "b6e37d40064759813b9a6ae2486022da",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1173,7 +1175,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/wishlists": {
             "post": {
                 "tags": [
                     "Wishlist"
