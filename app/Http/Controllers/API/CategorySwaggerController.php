@@ -13,7 +13,7 @@ class CategorySwaggerController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/category/post",
+     *     path="/api/category",
      *     summary="Tambah kategori",
      *     tags={"Category"},
      *     security={{"bearerAuth":{}}},

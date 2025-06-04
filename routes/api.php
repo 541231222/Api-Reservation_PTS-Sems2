@@ -39,49 +39,31 @@ Route::get('wishlists/{id}', [WishlistSwaggerController::class, 'show']);
 Route::post('/register', RegisterController::class);
 Route::post('/login', LoginController::class);
 
-// Protected routes
-Route::middleware('auth:sanctum')->group(function () {
-    // Category
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', LogoutController::class);
+});
+
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/category', [CategorySwaggerController::class, 'store']);
     Route::put('/category/update/{id}', [CategorySwaggerController::class, 'update']);
     Route::delete('/category/delete/{id}', [CategorySwaggerController::class, 'destroy']);
 
-    // Car
-    Route::put('/car/update/{id}', [CarSwaggerController::class, 'update']);
+        Route::post('/car', [CarSwaggerController::class, 'store']);
+            Route::put('/car/update/{id}', [CarSwaggerController::class, 'update']);
     Route::delete('/car/delete/{id}', [CarSwaggerController::class, 'destroy']);
 
-    // User
-    Route::put('/user/update/{id}', [UserSwaggerController::class, 'update']);
-    Route::delete('/user/delete/{id}', [UserSwaggerController::class, 'destroy']);
-
-    // Reservation
-    Route::post('/reservation', [ReservationSwaggerController::class, 'reserves']);
     Route::put('/reservation/update/{id}', [ReservationSwaggerController::class, 'update']);
     Route::delete('/reservation/delete/{id}', [ReservationSwaggerController::class, 'destroy']);
-
-    // Reviews
-    Route::post('reviews', [ReviewSwaggerController::class, 'store']);
-    Route::put('reviews/update/{id}', [ReviewSwaggerController::class, 'update']);
-    Route::delete('reviews/delete/{id}', [ReviewSwaggerController::class, 'destroy']);
-
-    // Wishlists
-    Route::put('wishlists/update/{id}', [WishlistSwaggerController::class, 'update']);
-    Route::delete('wishlists/delete/{id}', [WishlistSwaggerController::class, 'destroy']);
-
-    // Logout
-    Route::post('/logout', LogoutController::class);
-
-    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::post('/car', [CarSwaggerController::class, 'store']);
-    });
 });
 
 Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
-    Route::get('/user/profile', function () {
-        return 'Welcome user!';
-    });
-});
-
-Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
-        Route::post('wishlists', [WishlistSwaggerController::class, 'store']);
+     Route::put('/user/update/{id}', [UserSwaggerController::class, 'update']);
+    Route::delete('/user/delete/{id}', [UserSwaggerController::class, 'destroy']);
+      Route::post('/reservation', [ReservationSwaggerController::class, 'reserves']);
+      Route::post('reviews', [ReviewSwaggerController::class, 'store']);
+    Route::put('reviews/update/{id}', [ReviewSwaggerController::class, 'update']);
+    Route::delete('reviews/delete/{id}', [ReviewSwaggerController::class, 'destroy']);
+     Route::put('wishlists/update/{id}', [WishlistSwaggerController::class, 'update']);
+    Route::delete('wishlists/delete/{id}', [WishlistSwaggerController::class, 'destroy']);
 });

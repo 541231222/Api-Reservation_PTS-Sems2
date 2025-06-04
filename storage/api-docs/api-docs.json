@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "http://127.0.0.1:8000",
             "description": "API Server"
         }
     ],
@@ -382,13 +382,25 @@
                 ]
             }
         },
-        "/api/category/post": {
+        "/api/category": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Ambil semua data kategori",
+                "operationId": "33de01265bd5d5777b16fabf3ae98759",
+                "responses": {
+                    "200": {
+                        "description": "Data kategori berhasil diambil"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Tambah kategori",
-                "operationId": "5de836cc793aa363575a03d38a25dbd0",
+                "operationId": "85a04294c5dc0e55c881428248fe958c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -421,20 +433,6 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/api/category": {
-            "get": {
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Ambil semua data kategori",
-                "operationId": "33de01265bd5d5777b16fabf3ae98759",
-                "responses": {
-                    "200": {
-                        "description": "Data kategori berhasil diambil"
-                    }
-                }
             }
         },
         "/api/category/delete/{id}": {
