@@ -93,7 +93,7 @@ class WishlistSwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/wishlists/{id}",
+     *     path="/api/wishlists/update/{id}",
      *     tags={"Wishlist"},
      *     security={{"bearerAuth":{}}},
      *     summary="Update wishlist item",
@@ -125,7 +125,7 @@ class WishlistSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/wishlists/{id}",
+     *     path="/api/wishlists/delete/{id}",
      *     tags={"Wishlist"},
      *     security={{"bearerAuth":{}}},
      *     summary="Delete wishlist item",

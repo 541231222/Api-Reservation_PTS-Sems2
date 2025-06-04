@@ -69,7 +69,7 @@ class UserSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/user/{id}",
+     *     path="/api/user/delete/{id}",
      *     summary="Hapus pengguna berdasarkan ID",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},
@@ -103,7 +103,7 @@ class UserSwaggerController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/user",
+     *     path="/api/user/all",
      *     summary="Ambil semua pengguna",
      *     tags={"User"},
      *     @OA\Response(response=200, description="Daftar semua pengguna berhasil diambil"),
@@ -128,7 +128,7 @@ class UserSwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/user/{id}",
+     *     path="/api/user/update/{id}",
      *     summary="Perbarui data pengguna",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},

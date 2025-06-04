@@ -229,6 +229,39 @@
                 }
             }
         },
+        "/api/car/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Car"
+                ],
+                "summary": "Hapus mobil",
+                "operationId": "8cc9432eda3aa258ed25d89c84c5a21d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID mobil",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mobil berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Mobil tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/car/{id}": {
             "get": {
                 "tags": [
@@ -262,13 +295,15 @@
                         "description": "Mobil tidak ditemukan"
                     }
                 }
-            },
+            }
+        },
+        "/api/car/update/{id}": {
             "put": {
                 "tags": [
                     "Car"
                 ],
                 "summary": "Update data mobil",
-                "operationId": "8e2ad7fd7c5c5d9d99ad90929d46f960",
+                "operationId": "c96cdb0721918b98e0c4f93761d45f35",
                 "parameters": [
                     {
                         "name": "id",
@@ -345,58 +380,15 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "Car"
-                ],
-                "summary": "Hapus mobil",
-                "operationId": "e28d13360bbfab4a4e50d215c4342662",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID mobil",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Mobil berhasil dihapus"
-                    },
-                    "404": {
-                        "description": "Mobil tidak ditemukan"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
-        "/api/category": {
-            "get": {
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Ambil semua data kategori",
-                "operationId": "33de01265bd5d5777b16fabf3ae98759",
-                "responses": {
-                    "200": {
-                        "description": "Data kategori berhasil diambil"
-                    }
-                }
-            },
+        "/api/category/post": {
             "post": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Tambah kategori",
-                "operationId": "85a04294c5dc0e55c881428248fe958c",
+                "operationId": "5de836cc793aa363575a03d38a25dbd0",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -431,13 +423,62 @@
                 ]
             }
         },
-        "/api/category/{id}": {
+        "/api/category": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Ambil semua data kategori",
+                "operationId": "33de01265bd5d5777b16fabf3ae98759",
+                "responses": {
+                    "200": {
+                        "description": "Data kategori berhasil diambil"
+                    }
+                }
+            }
+        },
+        "/api/category/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "Hapus kategori",
+                "operationId": "c0228709268c3580d2f418d324787bfe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kategori berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Kategori tidak ditemukan"
+                    },
+                    "500": {
+                        "description": "Terjadi kesalahan saat menghapus kategori"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/category/update/{id}": {
             "put": {
                 "tags": [
                     "Category"
                 ],
                 "summary": "Perbarui data kategori",
-                "operationId": "3f343682a94712aabff82ef567680dc9",
+                "operationId": "c484e64d3c775adc9639c70fd533c3fb",
                 "parameters": [
                     {
                         "name": "id",
@@ -483,77 +524,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "Category"
-                ],
-                "summary": "Hapus kategori",
-                "operationId": "0cd71bdd34d07059c52f660306cf3ae1",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Kategori berhasil dihapus"
-                    },
-                    "404": {
-                        "description": "Kategori tidak ditemukan"
-                    },
-                    "500": {
-                        "description": "Terjadi kesalahan saat menghapus kategori"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/api/reservation": {
-            "get": {
-                "tags": [
-                    "Reservation"
-                ],
-                "summary": "Ambil semua reservasi dengan filter opsional",
-                "operationId": "0a552980e5cd60fabc817e71e3124529",
-                "parameters": [
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "Filter berdasarkan status reservasi",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "payment_status",
-                        "in": "query",
-                        "description": "Filter berdasarkan status pembayaran",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Data reservasi berhasil diambil"
-                    },
-                    "404": {
-                        "description": "Tidak ada data reservasi ditemukan"
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "Reservation"
@@ -663,13 +636,52 @@
                         "description": "Reservasi tidak ditemukan"
                     }
                 }
-            },
+            }
+        },
+        "/api/reservation/all": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "Ambil semua reservasi dengan filter opsional",
+                "operationId": "0cd5d3d1a96bb95db50f6cbce344c538",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter berdasarkan status reservasi",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_status",
+                        "in": "query",
+                        "description": "Filter berdasarkan status pembayaran",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data reservasi berhasil diambil"
+                    },
+                    "404": {
+                        "description": "Tidak ada data reservasi ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/reservation/update/{id}": {
             "put": {
                 "tags": [
                     "Reservation"
                 ],
                 "summary": "Perbarui status reservasi",
-                "operationId": "a9f386ea1bc748af19048475ae1f5748",
+                "operationId": "9e18c1a3301371329bddeb90950877d3",
                 "parameters": [
                     {
                         "name": "id",
@@ -720,13 +732,15 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/reservation/delete/{id}": {
             "delete": {
                 "tags": [
                     "Reservation"
                 ],
                 "summary": "Hapus reservasi",
-                "operationId": "1f9978e68a9454b50c6727c27b5a84dd",
+                "operationId": "f71f8b694f8c46f05d636619c986b613",
                 "parameters": [
                     {
                         "name": "id",
@@ -872,13 +886,15 @@
                         "description": "Review not found"
                     }
                 }
-            },
+            }
+        },
+        "/api/reviews/update/{id}": {
             "put": {
                 "tags": [
                     "Reviews"
                 ],
                 "summary": "Update an existing review",
-                "operationId": "9261409ea2fbc8c1620e4438ebac9f7f",
+                "operationId": "7422980234b76c2b65a964e9dbd44548",
                 "parameters": [
                     {
                         "name": "id",
@@ -926,13 +942,15 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/reviews/delete/{id}": {
             "delete": {
                 "tags": [
                     "Reviews"
                 ],
                 "summary": "Delete a review by ID",
-                "operationId": "d3e56fdd3c4e48e139bca1b774354239",
+                "operationId": "9413591b915edb6f396be86ff55db6ae",
                 "parameters": [
                     {
                         "name": "id",
@@ -1039,13 +1057,67 @@
                         "description": "Data pengguna ditemukan"
                     }
                 }
-            },
+            }
+        },
+        "/api/user/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Hapus pengguna berdasarkan ID",
+                "operationId": "360a31d048b6147b3f4112617b380ab9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pengguna berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Pengguna tidak ditemukan"
+                    },
+                    "500": {
+                        "description": "Kesalahan server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/all": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Ambil semua pengguna",
+                "operationId": "ff24a0669f461c8586b217ca96782af1",
+                "responses": {
+                    "200": {
+                        "description": "Daftar semua pengguna berhasil diambil"
+                    },
+                    "500": {
+                        "description": "Kesalahan server"
+                    }
+                }
+            }
+        },
+        "/api/user/update/{id}": {
             "put": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Perbarui data pengguna",
-                "operationId": "2d2cc8ddcc793bf58f51b92f251eeaea",
+                "operationId": "9699938a128e5de1f221b0a75d70505b",
                 "parameters": [
                     {
                         "name": "id",
@@ -1101,56 +1173,6 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Hapus pengguna berdasarkan ID",
-                "operationId": "08039ba8ddbb21fcffdece34b1c8955e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Pengguna berhasil dihapus"
-                    },
-                    "404": {
-                        "description": "Pengguna tidak ditemukan"
-                    },
-                    "500": {
-                        "description": "Kesalahan server"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/user": {
-            "get": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Ambil semua pengguna",
-                "operationId": "0fa048f1cbe7e39fa4bc89a37b30f4ce",
-                "responses": {
-                    "200": {
-                        "description": "Daftar semua pengguna berhasil diambil"
-                    },
-                    "500": {
-                        "description": "Kesalahan server"
-                    }
-                }
             }
         },
         "/api/wishlists/all": {
@@ -1259,13 +1281,15 @@
                         "description": "Not found"
                     }
                 }
-            },
+            }
+        },
+        "/api/wishlists/update/{id}": {
             "put": {
                 "tags": [
                     "Wishlist"
                 ],
                 "summary": "Update wishlist item",
-                "operationId": "84c534f5b251d2167878e7669f0f59b7",
+                "operationId": "284a912e6b0f9c7986b707ad078b81a3",
                 "parameters": [
                     {
                         "name": "id",
@@ -1320,13 +1344,15 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/wishlists/delete/{id}": {
             "delete": {
                 "tags": [
                     "Wishlist"
                 ],
                 "summary": "Delete wishlist item",
-                "operationId": "b4e43e662ae49a8905288b1f7a904b5e",
+                "operationId": "2f4a4ab94737ce1b326d9899b018fcdc",
                 "parameters": [
                     {
                         "name": "id",

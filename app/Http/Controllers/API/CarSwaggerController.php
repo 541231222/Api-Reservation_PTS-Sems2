@@ -231,7 +231,7 @@ class CarSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/car/{id}",
+     *     path="/api/car/delete/{id}",
      *     summary="Hapus mobil",
      *     tags={"Car"},
      *     security={{"bearerAuth":{}}},
@@ -305,7 +305,7 @@ class CarSwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/car/{id}",
+     *     path="/api/car/update/{id}",
      *     summary="Update data mobil",
      *     tags={"Car"},
      *     security={{"bearerAuth":{}}},

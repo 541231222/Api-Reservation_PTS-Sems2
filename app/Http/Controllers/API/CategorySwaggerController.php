@@ -13,7 +13,7 @@ class CategorySwaggerController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/category",
+     *     path="/api/category/post",
      *     summary="Tambah kategori",
      *     tags={"Category"},
      *     security={{"bearerAuth":{}}},
@@ -64,7 +64,7 @@ class CategorySwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/category/{id}",
+     *     path="/api/category/delete/{id}",
      *     summary="Hapus kategori",
      *     tags={"Category"},
      *     security={{"bearerAuth":{}}},
@@ -99,7 +99,7 @@ class CategorySwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/category/{id}",
+     *     path="/api/category/update/{id}",
      *     summary="Perbarui data kategori",
      *     tags={"Category"},
      *     security={{"bearerAuth":{}}},

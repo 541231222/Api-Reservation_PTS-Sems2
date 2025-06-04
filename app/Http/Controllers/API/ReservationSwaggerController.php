@@ -109,7 +109,7 @@ class ReservationSwaggerController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/reservation",
+     *     path="/api/reservation/all",
      *     summary="Ambil semua reservasi dengan filter opsional",
      *     tags={"Reservation"},
      *     @OA\Parameter(
@@ -157,7 +157,7 @@ class ReservationSwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/reservation/{id}",
+     *     path="/api/reservation/update/{id}",
      *     summary="Perbarui status reservasi",
      *     tags={"Reservation"},
      *     security={{"bearerAuth":{}}},
@@ -206,7 +206,7 @@ class ReservationSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/reservation/{id}",
+     *     path="/api/reservation/delete/{id}",
      *     summary="Hapus reservasi",
      *     tags={"Reservation"},
      *     security={{"bearerAuth":{}}},

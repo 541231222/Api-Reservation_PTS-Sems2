@@ -111,7 +111,7 @@ class ReviewSwaggerController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/reviews/{id}",
+     *     path="/api/reviews/update/{id}",
      *     tags={"Reviews"},
      *     security={{"bearerAuth":{}}},
      *     summary="Update an existing review",
@@ -151,7 +151,7 @@ class ReviewSwaggerController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/reviews/{id}",
+     *     path="/api/reviews/delete/{id}",
      *     tags={"Reviews"},
      *     security={{"bearerAuth":{}}},
      *     summary="Delete a review by ID",
