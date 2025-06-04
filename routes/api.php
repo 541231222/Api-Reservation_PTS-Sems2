@@ -47,7 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/category/delete/{id}', [CategorySwaggerController::class, 'destroy']);
 
     // Car
-    Route::post('/car', [CarSwaggerController::class, 'store']);
     Route::put('/car/update/{id}', [CarSwaggerController::class, 'update']);
     Route::delete('/car/delete/{id}', [CarSwaggerController::class, 'destroy']);
 
@@ -66,10 +65,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('reviews/delete/{id}', [ReviewSwaggerController::class, 'destroy']);
 
     // Wishlists
-    Route::post('wishlists', [WishlistSwaggerController::class, 'store']);
     Route::put('wishlists/update/{id}', [WishlistSwaggerController::class, 'update']);
     Route::delete('wishlists/delete/{id}', [WishlistSwaggerController::class, 'destroy']);
 
     // Logout
     Route::post('/logout', LogoutController::class);
+
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    Route::post('/car', [CarSwaggerController::class, 'store']);
+    });
+});
+
+Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
+    Route::get('/user/profile', function () {
+        return 'Welcome user!';
+    });
+});
+
+Route::middleware(['auth:sanctum', 'role:admin,user'])->group(function () {
+        Route::post('wishlists', [WishlistSwaggerController::class, 'store']);
 });

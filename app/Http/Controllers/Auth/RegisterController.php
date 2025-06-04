@@ -17,16 +17,8 @@ use Illuminate\Http\Request;
  *             required={"name", "email", "password"},
  *             @OA\Property(property="name", type="string", example="John Doe"),
  *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
- *             @OA\Property(property="password", type="string", format="password", example="password123")
- *         )
- *     ),
- *     @OA\Parameter(
- *         name="Accept",
- *         in="header",
- *         required=true,
- *         @OA\Schema(
- *             type="string",
- *             example="application/json"
+ *             @OA\Property(property="password", type="string", format="password", example="password123"),
+ *             @OA\Property(property="role", type="string", example="user")
  *         )
  *     ),
  *     @OA\Response(
@@ -37,6 +29,7 @@ use Illuminate\Http\Request;
  *                 @OA\Property(property="id", type="integer", example=1),
  *                 @OA\Property(property="name", type="string", example="John Doe"),
  *                 @OA\Property(property="email", type="string", example="john@example.com"),
+ *                 @OA\Property(property="role", type="string", example="user"),
  *                 @OA\Property(property="created_at", type="string", example="2025-06-02T12:00:00.000000Z"),
  *                 @OA\Property(property="updated_at", type="string", example="2025-06-02T12:00:00.000000Z")
  *             ),
@@ -49,10 +42,19 @@ class RegisterController extends Controller
 {
     public function __invoke(Request $request)
     {
+        // Validasi input termasuk role
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'role'     => 'in:admin,user'
+        ]);
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => bcrypt($request->password),
+            'role'     => $request->role ?? 'user' // ⬅️ Tambahkan role
         ]);
 
         $token = $user->createToken('API Token')->plainTextToken;

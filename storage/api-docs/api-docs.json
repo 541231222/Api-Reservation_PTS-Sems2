@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000",
+            "url": "http://localhost:8000",
             "description": "API Server"
         }
     ],
@@ -1434,6 +1434,10 @@
                                         "token": {
                                             "type": "string",
                                             "example": "1|abc123xyz456token"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
                                         }
                                     },
                                     "type": "object"
@@ -1449,7 +1453,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Credential Are Not Valid"
+                                            "example": "Credentials are not valid or unauthorized"
                                         }
                                     },
                                     "type": "object"
@@ -1476,7 +1480,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Successfully Logout"
+                                            "example": "Successfully logged out"
                                         },
                                         "token": {
                                             "type": "string",
@@ -1503,17 +1507,6 @@
                 ],
                 "summary": "Register new user",
                 "operationId": "7d8c5938c0f8c4cee857ce8e9a12d028",
-                "parameters": [
-                    {
-                        "name": "Accept",
-                        "in": "header",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "application/json"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1538,6 +1531,10 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "password123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "user"
                                     }
                                 },
                                 "type": "object"
@@ -1565,6 +1562,10 @@
                                                 "email": {
                                                     "type": "string",
                                                     "example": "john@example.com"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "user"
                                                 },
                                                 "created_at": {
                                                     "type": "string",

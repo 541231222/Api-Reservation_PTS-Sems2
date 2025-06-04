@@ -67,9 +67,11 @@ class WishlistSwaggerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'car_id'  => 'required|exists:cars,id',
         ]);
+
+        // Ambil user_id dari user login, jangan dari request (supaya aman)
+        $data['user_id'] = $request->user()->id;
 
         $wishlist = Wishlist::firstOrCreate($data);
 

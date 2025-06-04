@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  *         response=200,
  *         description="Successfully logged out",
  *         @OA\JsonContent(
- *             @OA\Property(property="message", type="string", example="Successfully Logout"),
+ *             @OA\Property(property="message", type="string", example="Successfully logged out"),
  *             @OA\Property(property="token", type="string", example="Token has been revoked")
  *         )
  *     )
@@ -25,13 +25,22 @@ class LogoutController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $token = $request->user()->currentAccessToken();
-        $tokenId = $token->id;
-        $token->delete();
+        $user = $request->user();
+        $token = $user->currentAccessToken();
+
+        if ($token) {
+            $tokenId = $token->id;
+            $token->delete();
+
+            return response()->json([
+                'message' => 'Successfully logged out',
+                'token' => "Token {$tokenId} has been revoked"
+            ]);
+        }
 
         return response()->json([
-            'message' => 'Successfully Logout',
-            'token' => "Token {$tokenId} has been revoked"
-        ]);
+            'message' => 'No token found',
+            'token' => null
+        ], 400);
     }
 }
